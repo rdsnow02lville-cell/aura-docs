@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>aura — judge me</title>
+  <meta name="description" content="aura judges everything you do and assigns aura points. log it. get roasted. share the verdict.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      background: #000;
+      color: #fff;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+    .brand {
+      font-size: 96px;
+      font-weight: 900;
+      letter-spacing: -6px;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+    .tagline {
+      font-size: 22px;
+      font-weight: 400;
+      color: #aaa;
+      margin-bottom: 48px;
+    }
+    .description {
+      font-size: 16px;
+      color: #ddd;
+      line-height: 1.6;
+      margin-bottom: 48px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta {
+      display: inline-block;
+      background: #fff;
+      color: #000;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: none;
+      margin-bottom: 16px;
+    }
+    .cta:hover { background: #eee; }
+    .secondary {
+      color: #888;
+      font-size: 14px;
+    }
+    .secondary a { color: #888; text-decoration: none; }
+    .secondary a:hover { color: #fff; }
+    .footer {
+      text-align: center;
+      color: #666;
+      font-size: 13px;
+      padding: 24px 0;
+    }
+    .footer a {
+      color: #666;
+      text-decoration: none;
+      margin: 0 12px;
+    }
+    .footer a:hover { color: #fff; }
+    @media (max-width: 500px) {
+      .brand { font-size: 72px; letter-spacing: -4px; }
+      .tagline { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand">aura</div>
+    <div class="tagline">an AI judges everything you do.</div>
+    <div class="description">
+      log what you did. claude scores it on the aura scale (-10,000 to +10,000) and roasts you with a verdict. compare with friends. screenshot the worst ones.
+    </div>
+    <a href="#" class="cta">coming to the app store</a>
+    <div class="secondary">currently in TestFlight beta</div>
+  </div>
+
+  <div class="footer">
+    © 2026 aura
+    <a href="/privacy.html">privacy</a>
+    <a href="/terms.html">terms</a>
+    <a href="mailto:1staura@aura-judge.com">contact</a>
+  </div>
+</body>
+</html>
