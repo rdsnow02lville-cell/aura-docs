@@ -2,106 +2,269 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>aura — judge me</title>
-  <meta name="description" content="aura judges everything you do and assigns aura points. log it. get roasted. share the verdict.">
+  <meta name="description" content="finally, an app that judges you for the texts you sent at 2am.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="aura — judge me">
+  <meta property="og:description" content="finally, an app that judges you for the texts you sent at 2am.">
+  <meta property="og:image" content="https://aura-judge.com/screen-1.png">
+  <meta property="og:url" content="https://aura-judge.com">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="aura — judge me">
+  <meta name="twitter:description" content="finally, an app that judges you for the texts you sent at 2am.">
+  <meta name="twitter:image" content="https://aura-judge.com/screen-1.png">
+
   <style>
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --muted: #888;
+      --border: #222;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-      background: #000;
-      color: #fff;
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
     }
+
     body {
-      display: flex;
-      flex-direction: column;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
       min-height: 100vh;
-      padding: 40px 20px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-    .container {
-      max-width: 600px;
+
+    section {
+      padding: 80px 24px;
+      max-width: 1100px;
       margin: 0 auto;
-      flex: 1;
+    }
+
+    .section-label {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* App Store badge */
+    .badge {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .badge:hover { transform: scale(1.04); }
+    .badge img {
+      height: 56px;
+      width: auto;
+      display: block;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 92vh;
+      min-height: 92svh;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
       text-align: center;
+      padding-top: 40px;
+      padding-bottom: 40px;
     }
-    .brand {
-      font-size: 96px;
+    .wordmark {
+      font-size: clamp(96px, 26vw, 220px);
       font-weight: 900;
-      letter-spacing: -6px;
-      margin-bottom: 16px;
-      line-height: 1;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+      margin-bottom: 24px;
     }
     .tagline {
-      font-size: 22px;
-      font-weight: 400;
-      color: #aaa;
-      margin-bottom: 48px;
-    }
-    .description {
-      font-size: 16px;
-      color: #ddd;
-      line-height: 1.6;
-      margin-bottom: 48px;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .cta {
-      display: inline-block;
-      background: #fff;
-      color: #000;
-      padding: 16px 32px;
-      border-radius: 12px;
+      font-size: clamp(20px, 4.5vw, 30px);
       font-weight: 700;
-      font-size: 16px;
-      text-decoration: none;
-      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      max-width: 600px;
+      margin: 0 auto 48px;
     }
-    .cta:hover { background: #eee; }
-    .secondary {
-      color: #888;
+
+    /* What it is */
+    .about {
+      text-align: center;
+    }
+    .about p {
+      font-size: clamp(18px, 3vw, 24px);
+      color: var(--fg);
+      max-width: 620px;
+      margin: 0 auto;
+      letter-spacing: -0.01em;
+    }
+
+    /* Screenshots */
+    .shots {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 24px 24px;
+      max-width: 100%;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .shots::-webkit-scrollbar { height: 8px; }
+    .shots::-webkit-scrollbar-track { background: transparent; }
+    .shots::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .shots img {
+      height: 560px;
+      width: auto;
+      flex: 0 0 auto;
+      scroll-snap-align: center;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: #0a0a0a;
+    }
+
+    /* Videos */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      align-items: start;
+      justify-items: center;
+    }
+    .videos-grid .instagram-media {
+      margin: 0 !important;
+      min-width: unset !important;
+      width: 100% !important;
+      max-width: 460px !important;
+    }
+
+    /* Final CTA */
+    .cta-final {
+      text-align: center;
+    }
+    .cta-final h2 {
+      font-size: clamp(32px, 7vw, 56px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 36px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--muted);
       font-size: 14px;
     }
-    .secondary a { color: #888; text-decoration: none; }
-    .secondary a:hover { color: #fff; }
-    .footer {
-      text-align: center;
-      color: #666;
-      font-size: 13px;
-      padding: 24px 0;
-    }
-    .footer a {
-      color: #666;
+    footer nav { margin-bottom: 16px; }
+    footer a {
+      color: var(--muted);
       text-decoration: none;
-      margin: 0 12px;
+      transition: color 0.2s ease;
     }
-    .footer a:hover { color: #fff; }
-    @media (max-width: 500px) {
-      .brand { font-size: 72px; letter-spacing: -4px; }
-      .tagline { font-size: 18px; }
+    footer a:hover { color: var(--fg); }
+    .footer-row {
+      margin-bottom: 16px;
+    }
+    .footer-row a { margin: 0 8px; }
+    .footer-copy { color: #555; }
+
+    @media (max-width: 700px) {
+      section { padding: 56px 20px; }
+      .badge img { height: 48px; }
+      .videos-grid {
+        grid-template-columns: 1fr;
+      }
+      .shots img { height: 480px; }
+    }
+
+    @media (max-width: 420px) {
+      .shots img { height: 70vh; max-height: 520px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="brand">aura</div>
-    <div class="tagline">an AI judges everything you do.</div>
-    <div class="description">
-      log what you did. claude scores it on the aura scale (-10,000 to +10,000) and roasts you with a verdict. compare with friends. screenshot the worst ones.
-    </div>
-    <a href="#" class="cta">coming to the app store</a>
-    <div class="secondary">currently in TestFlight beta</div>
-  </div>
 
-  <div class="footer">
-    © 2026 aura
-    <a href="/privacy.html">privacy</a>
-    <a href="/terms.html">terms</a>
-    <a href="mailto:1staura@aura-judge.com">contact</a>
-  </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wordmark">aura</div>
+    <p class="tagline">finally, an app that judges you for the texts you sent at 2am.</p>
+    <a class="badge" href="https://apps.apple.com/us/app/aura-judge-me/id6769072074" aria-label="Download on the App Store">
+      <img src="appstore-badge.svg" alt="Download on the App Store">
+    </a>
+  </section>
+
+  <!-- What it is -->
+  <section class="about">
+    <p>tell aura what you did. an AI judges you. you earn or lose aura points. your friends watch the chaos unfold on the leaderboard.</p>
+  </section>
+
+  <!-- Screenshots -->
+  <section>
+    <div class="section-label">screenshots</div>
+    <div class="shots">
+      <img src="screen-1.png" alt="aura app screenshot 1" loading="lazy">
+      <img src="screen-2.png" alt="aura app screenshot 2" loading="lazy">
+      <img src="screen-3.png" alt="aura app screenshot 3" loading="lazy">
+      <img src="screen-4.png" alt="aura app screenshot 4" loading="lazy">
+      <img src="screen-5.png" alt="aura app screenshot 5" loading="lazy">
+    </div>
+  </section>
+
+  <!-- Videos -->
+  <section>
+    <div class="section-label">see it in action</div>
+    <div class="videos-grid">
+      <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DZQAfCLzAXo/" data-instgrm-version="14">
+        <a href="https://www.instagram.com/p/DZQAfCLzAXo/">view this post on instagram</a>
+      </blockquote>
+      <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DY0e4WjP2tm/" data-instgrm-version="14">
+        <a href="https://www.instagram.com/p/DY0e4WjP2tm/">view this post on instagram</a>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-final">
+    <h2>ready to get judged?</h2>
+    <a class="badge" href="https://apps.apple.com/us/app/aura-judge-me/id6769072074" aria-label="Download on the App Store">
+      <img src="appstore-badge.svg" alt="Download on the App Store">
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-row">
+      <a href="privacy.html">privacy</a> ·
+      <a href="terms.html">terms</a> ·
+      <a href="mailto:aura@aura-judge.com">contact</a>
+    </div>
+    <div class="footer-row">
+      <a href="https://www.instagram.com/aurajudge">instagram</a> ·
+      <a href="https://www.tiktok.com/@aurajudge">tiktok</a>
+    </div>
+    <div class="footer-copy">© 2026 aura</div>
+  </footer>
+
+  <script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>
