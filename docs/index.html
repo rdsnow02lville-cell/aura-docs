@@ -1,270 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>aura — judge me</title>
-  <meta name="description" content="finally, an app that judges you for the texts you sent at 2am.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>aura — get judged. farm aura.</title>
+<meta name="description" content="the ai that rates your every move. post what you did, get judged, farm aura, climb the leaderboard.">
+<meta property="og:title" content="aura — get judged. farm aura.">
+<meta property="og:description" content="the ai that rates your every move. post what you did, get judged, farm aura.">
+<meta property="og:url" content="https://aura-judge.com">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000; --panel:#0b0b0c; --panel-2:#101012; --line:#1c1c1f;
+  --text:#fff; --muted:#9a9aa2; --dim:#66666e;
+  --green:#4ade80; --green-soft:rgba(74,222,128,.14);
+  --violet:#818cf8; --red:#ef4444; --gold:#fbbf24;
+  --disp:'Poppins',sans-serif; --body:'Inter',sans-serif;
+  --r:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:4px}
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="aura — judge me">
-  <meta property="og:description" content="finally, an app that judges you for the texts you sent at 2am.">
-  <meta property="og:image" content="https://aura-judge.com/screen-1.png">
-  <meta property="og:url" content="https://aura-judge.com">
-  <meta property="og:type" content="website">
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="aura — judge me">
-  <meta name="twitter:description" content="finally, an app that judges you for the texts you sent at 2am.">
-  <meta name="twitter:image" content="https://aura-judge.com/screen-1.png">
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:var(--disp);font-weight:800;font-size:1.5rem;display:flex;align-items:center;gap:10px}
+.logo .a-dot{width:34px;height:34px;border-radius:9px;background:radial-gradient(circle at 50% 45%, rgba(74,222,128,.55), rgba(74,222,128,.08) 62%, transparent 75%), #060606;display:grid;place-items:center;font-size:1.25rem;line-height:1;box-shadow:0 0 22px rgba(74,222,128,.25)}
+.nav-links{display:flex;gap:28px;align-items:center;font-size:.92rem;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--disp);font-weight:700;border-radius:999px;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;cursor:pointer}
+.btn-green{background:var(--green);color:#04160a;padding:11px 22px;font-size:.95rem}
+.btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(74,222,128,.35)}
+.btn-ghost{border:1px solid var(--line);color:var(--text);padding:11px 22px;font-size:.95rem;background:transparent}
+.btn-ghost:hover{border-color:#333;background:#0d0d0f}
+.btn-sm{padding:9px 18px;font-size:.88rem}
 
-  <style>
-    :root {
-      --bg: #000;
-      --fg: #fff;
-      --muted: #888;
-      --border: #222;
-    }
+/* ---------- hero ---------- */
+.hero{position:relative;padding:96px 0 80px;overflow:hidden}
+.hero-glow{position:absolute;inset:-20% -10% auto;height:140%;pointer-events:none;
+  background:radial-gradient(560px 560px at 78% 42%, rgba(74,222,128,.16), transparent 62%),
+             radial-gradient(420px 420px at 14% 8%, rgba(74,222,128,.06), transparent 60%)}
+.hero-in{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;letter-spacing:.04em;color:var(--green);background:var(--green-soft);border:1px solid rgba(74,222,128,.25);padding:6px 14px;border-radius:999px;margin-bottom:22px}
+.eyebrow .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(2.6rem,5.6vw,4.2rem);line-height:1.04;letter-spacing:-.02em}
+h1 .dot{color:var(--green)}
+.hero p.lede{color:var(--muted);font-size:1.15rem;max-width:34rem;margin:22px 0 32px}
+.store-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.store-note{font-size:.82rem;color:var(--dim);margin-top:14px}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+/* verdict card stack */
+.stack{position:relative;min-height:430px}
+.vcard{position:absolute;width:min(360px,86%);background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:0 18px 60px rgba(0,0,0,.6)}
+.vcard .who{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.avatar{width:34px;height:34px;border-radius:50%;background:#161618;display:grid;place-items:center;font-size:.8rem;font-weight:600}
+.ring-g{box-shadow:0 0 0 2px #000,0 0 0 4px var(--green)}
+.ring-v{box-shadow:0 0 0 2px #000,0 0 0 4px var(--violet)}
+.ring-gold{box-shadow:0 0 0 2px #000,0 0 0 4px var(--gold)}
+.who .name{font-size:.9rem;font-weight:600}
+.tierpill{font-size:.62rem;font-weight:700;letter-spacing:.05em;padding:2px 8px;border-radius:999px;border:1px solid}
+.t-rising{color:var(--green);border-color:rgba(74,222,128,.4)}
+.t-cert{color:var(--violet);border-color:rgba(129,140,248,.4)}
+.t-legend{color:var(--gold);border-color:rgba(251,191,36,.4)}
+.vcard .action{font-size:1rem;font-weight:600;margin-bottom:10px}
+.vcard .verdict{font-size:.9rem;color:var(--muted);border-left:3px solid var(--green);padding-left:12px;margin-bottom:16px}
+.vcard .delta{font-family:var(--disp);font-weight:800;font-size:1.7rem}
+.d-plus{color:var(--green)} .d-minus{color:var(--red)}
+.vcard .delta small{font-size:.75rem;color:var(--dim);font-weight:500;font-family:var(--body);margin-left:8px}
+.c1{top:0;left:0;transform:rotate(-3deg);z-index:3}
+.c2{top:150px;right:0;transform:rotate(2.2deg);z-index:2}
+.c3{top:305px;left:26px;transform:rotate(-1.2deg);z-index:1;opacity:.92}
+.vcard:hover{z-index:9;transform:rotate(0) translateY(-4px);transition:transform .25s ease}
 
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
+/* ---------- sections ---------- */
+section{padding:88px 0}
+.sec-eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:14px}
+h2{font-family:var(--disp);font-weight:800;font-size:clamp(1.8rem,3.4vw,2.6rem);letter-spacing:-.015em;line-height:1.12;margin-bottom:14px}
+.sub{color:var(--muted);max-width:38rem}
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.5;
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;position:relative;transition:border-color .2s ease, transform .2s ease}
+.step:hover{border-color:rgba(74,222,128,.35);transform:translateY(-3px)}
+.step .n{font-family:var(--disp);font-weight:800;font-size:.85rem;color:var(--green);margin-bottom:14px}
+.step h3{font-family:var(--disp);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+.step p{font-size:.88rem;color:var(--muted)}
 
-    section {
-      padding: 80px 24px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+/* features */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.feat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;transition:border-color .2s ease, transform .2s ease}
+.feat:hover{border-color:#2a2a2e;transform:translateY(-3px)}
+.feat .ic{width:40px;height:40px;border-radius:11px;background:var(--green-soft);display:grid;place-items:center;font-size:1.15rem;margin-bottom:16px}
+.feat h3{font-family:var(--disp);font-weight:700;font-size:1.02rem;margin-bottom:8px}
+.feat p{font-size:.88rem;color:var(--muted)}
 
-    .section-label {
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 40px;
-    }
+/* tiers */
+.tiers-band{background:linear-gradient(180deg,#050505,#0a0a0b);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:48px}
+.tier{border-radius:var(--r);border:1px solid var(--line);background:var(--panel);padding:22px 18px;text-align:center;transition:transform .2s ease}
+.tier:hover{transform:translateY(-4px)}
+.tier .badge{width:46px;height:46px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:1.1rem;background:#0f0f11}
+.tier h3{font-family:var(--disp);font-weight:700;font-size:.98rem;margin-bottom:6px}
+.tier p{font-size:.78rem;color:var(--muted)}
+.b-new{color:var(--dim);box-shadow:0 0 0 2px #222}
+.b-ris{color:var(--green);box-shadow:0 0 0 2px var(--green),0 0 18px rgba(74,222,128,.35)}
+.b-cer{color:var(--violet);box-shadow:0 0 0 2px var(--violet),0 0 18px rgba(129,140,248,.35)}
+.b-not{color:var(--red);box-shadow:0 0 0 2px var(--red),0 0 18px rgba(239,68,68,.3)}
+.b-leg{color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 0 22px rgba(251,191,36,.4)}
 
-    /* App Store badge */
-    .badge {
-      display: inline-block;
-      transition: transform 0.2s ease;
-    }
-    .badge:hover { transform: scale(1.04); }
-    .badge img {
-      height: 56px;
-      width: auto;
-      display: block;
-    }
+/* faq */
+.faq{max-width:720px;margin:48px auto 0}
+details{border:1px solid var(--line);border-radius:14px;background:var(--panel);margin-bottom:12px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:18px 22px;font-family:var(--disp);font-weight:600;font-size:.98rem;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';color:var(--green);font-size:1.2rem;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 22px 18px;color:var(--muted);font-size:.92rem}
 
-    /* Hero */
-    .hero {
-      min-height: 92vh;
-      min-height: 92svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding-top: 40px;
-      padding-bottom: 40px;
-    }
-    .wordmark {
-      font-size: clamp(96px, 26vw, 220px);
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      line-height: 0.9;
-      margin-bottom: 24px;
-    }
-    .tagline {
-      font-size: clamp(20px, 4.5vw, 30px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--fg);
-      max-width: 600px;
-      margin: 0 auto 48px;
-    }
+/* cta */
+.cta{text-align:center;position:relative;overflow:hidden}
+.cta .glow{position:absolute;inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:640px;height:640px;pointer-events:none;background:radial-gradient(circle,rgba(74,222,128,.14),transparent 62%)}
+.cta-in{position:relative}
+.big-a{font-family:var(--disp);font-weight:800;font-size:4.4rem;line-height:1;display:inline-block;margin-bottom:18px;
+  text-shadow:0 0 34px rgba(74,222,128,.6),0 0 90px rgba(74,222,128,.3)}
+.cta .store-row{justify-content:center;margin-top:30px}
 
-    /* What it is */
-    .about {
-      text-align: center;
-    }
-    .about p {
-      font-size: clamp(18px, 3vw, 24px);
-      color: var(--fg);
-      max-width: 620px;
-      margin: 0 auto;
-      letter-spacing: -0.01em;
-    }
+/* footer */
+footer{border-top:1px solid var(--line);padding:44px 0 56px;font-size:.85rem;color:var(--dim)}
+.foot-in{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap}
+.foot-links a:hover{color:var(--text)}
 
-    /* Screenshots */
-    .shots {
-      display: flex;
-      gap: 20px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding: 4px 24px 24px;
-      max-width: 100%;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-    }
-    .shots::-webkit-scrollbar { height: 8px; }
-    .shots::-webkit-scrollbar-track { background: transparent; }
-    .shots::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
-    }
-    .shots img {
-      height: 560px;
-      width: auto;
-      flex: 0 0 auto;
-      scroll-snap-align: center;
-      border-radius: 28px;
-      border: 1px solid var(--border);
-      background: #0a0a0a;
-    }
-
-    /* Videos */
-    .videos-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-      align-items: start;
-      justify-items: center;
-    }
-    .videos-grid .instagram-media {
-      margin: 0 !important;
-      min-width: unset !important;
-      width: 100% !important;
-      max-width: 460px !important;
-    }
-
-    /* Final CTA */
-    .cta-final {
-      text-align: center;
-    }
-    .cta-final h2 {
-      font-size: clamp(32px, 7vw, 56px);
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      margin-bottom: 36px;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 48px 24px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    footer nav { margin-bottom: 16px; }
-    footer a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    footer a:hover { color: var(--fg); }
-    .footer-row {
-      margin-bottom: 16px;
-    }
-    .footer-row a { margin: 0 8px; }
-    .footer-copy { color: #555; }
-
-    @media (max-width: 700px) {
-      section { padding: 56px 20px; }
-      .badge img { height: 48px; }
-      .videos-grid {
-        grid-template-columns: 1fr;
-      }
-      .shots img { height: 480px; }
-    }
-
-    @media (max-width: 420px) {
-      .shots img { height: 70vh; max-height: 520px; }
-    }
-  </style>
+/* responsive */
+@media(max-width:920px){
+  .hero-in{grid-template-columns:1fr;gap:60px}
+  .stack{min-height:470px;max-width:420px;margin:0 auto}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .features{grid-template-columns:repeat(2,1fr)}
+  .ladder{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .features{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .ladder{grid-template-columns:repeat(2,1fr)}
+  section{padding:64px 0}
+  .hero{padding:64px 0 56px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="wordmark">aura</div>
-    <p class="tagline">finally, an app that judges you for the texts you sent at 2am.</p>
-    <a class="badge" href="https://apps.apple.com/us/app/aura-judge-me/id6769072074" aria-label="Download on the App Store">
-      <img src="appstore-badge.svg" alt="Download on the App Store">
-    </a>
-  </section>
-
-  <!-- What it is -->
-  <section class="about">
-    <p>tell aura what you did. an AI judges you. you earn or lose aura points. your friends watch the chaos unfold on the leaderboard.</p>
-  </section>
-
-  <!-- Screenshots -->
-  <section>
-    <div class="section-label">screenshots</div>
-    <div class="shots">
-      <img src="screen-1.png" alt="aura app screenshot 1" loading="lazy">
-      <img src="screen-2.png" alt="aura app screenshot 2" loading="lazy">
-      <img src="screen-3.png" alt="aura app screenshot 3" loading="lazy">
-      <img src="screen-4.png" alt="aura app screenshot 4" loading="lazy">
-      <img src="screen-5.png" alt="aura app screenshot 5" loading="lazy">
+<nav>
+  <div class="wrap nav-in">
+    <a class="logo" href="#top"><span class="a-dot">a</span>aura</a>
+    <div class="nav-links">
+      <a href="#how">how it works</a>
+      <a href="#features">features</a>
+      <a href="#tiers">tiers</a>
+      <a href="#faq">faq</a>
     </div>
-  </section>
+    <a class="btn btn-green btn-sm" href="https://apps.apple.com/app/id6769072074">get the app</a>
+  </div>
+</nav>
 
-  <!-- Videos -->
-  <section>
-    <div class="section-label">see it in action</div>
-    <div class="videos-grid">
-      <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DZQAfCLzAXo/" data-instgrm-version="14">
-        <a href="https://www.instagram.com/p/DZQAfCLzAXo/">view this post on instagram</a>
-      </blockquote>
-      <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DY0e4WjP2tm/" data-instgrm-version="14">
-        <a href="https://www.instagram.com/p/DY0e4WjP2tm/">view this post on instagram</a>
-      </blockquote>
+<header class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="wrap hero-in">
+    <div>
+      <span class="eyebrow"><span class="pulse"></span>now on the app store · android coming soon</span>
+      <h1>get judged<span class="dot">.</span><br>farm aura<span class="dot">.</span></h1>
+      <p class="lede">post what you did. the ai rates it — brutally, fairly, instantly. earn aura, unlock tiers, and find out once and for all who in the group chat has the worst decision-making.</p>
+      <div class="store-row">
+        <a class="btn btn-green" href="https://apps.apple.com/app/id6769072074">download for ios</a>
+        <a class="btn btn-ghost" href="#how">see how it works</a>
+      </div>
+      <p class="store-note">free to use. your posts stay yours — share to everyone or just friends, per post.</p>
     </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section class="cta-final">
-    <h2>ready to get judged?</h2>
-    <a class="badge" href="https://apps.apple.com/us/app/aura-judge-me/id6769072074" aria-label="Download on the App Store">
-      <img src="appstore-badge.svg" alt="Download on the App Store">
-    </a>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-row">
-      <a href="privacy.html">privacy</a> ·
-      <a href="terms.html">terms</a> ·
-      <a href="mailto:aura@aura-judge.com">contact</a>
+    <div class="stack" aria-hidden="true">
+      <div class="vcard c1">
+        <div class="who"><span class="avatar ring-g">m</span><span class="name">@mayhem.mia</span><span class="tierpill t-rising">rising</span></div>
+        <div class="action">"texted my ex at 2am to ask if they still had my hoodie"</div>
+        <div class="verdict">the hoodie was never the point and everyone knows it. including the hoodie.</div>
+        <div class="delta d-minus">−1,250 <small>aura</small></div>
+      </div>
+      <div class="vcard c2">
+        <div class="who"><span class="avatar ring-v">j</span><span class="name">@jchapman</span><span class="tierpill t-cert">certified</span></div>
+        <div class="action">"woke up at 5am and ran 6 miles in the rain"</div>
+        <div class="verdict">disgusting behavior. genuinely impressive. the judge is conflicted but the math isn't.</div>
+        <div class="delta d-plus">+975 <small>aura</small></div>
+      </div>
+      <div class="vcard c3">
+        <div class="who"><span class="avatar ring-gold">z</span><span class="name">@zerochill</span><span class="tierpill t-legend">legend</span></div>
+        <div class="action">"ate cereal for dinner three nights in a row"</div>
+        <div class="verdict">consistency is a virtue. this is not what the philosophers meant.</div>
+        <div class="delta d-minus">−480 <small>aura</small></div>
+      </div>
     </div>
-    <div class="footer-row">
-      <a href="https://www.instagram.com/aurajudge">instagram</a> ·
-      <a href="https://www.tiktok.com/@aurajudge">tiktok</a>
-    </div>
-    <div class="footer-copy">© 2026 Universal Spine LLC</div>
-  </footer>
+  </div>
+</header>
 
-  <script async src="//www.instagram.com/embed.js"></script>
+<section id="how">
+  <div class="wrap">
+    <div class="sec-eyebrow">the loop</div>
+    <h2>four steps to judgment</h2>
+    <p class="sub">from questionable decision to public verdict in under thirty seconds.</p>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3>post what you did</h3><p>big or small. impulse buys, 2am texts, gym heroics, cereal dinners. photos welcome.</p></div>
+      <div class="step"><div class="n">02</div><h3>get judged</h3><p>the ai reads it and delivers a verdict — sharp, funny, and fair enough to sting.</p></div>
+      <div class="step"><div class="n">03</div><h3>earn (or lose) aura</h3><p>every verdict moves your score. chaos counts. your aura never lies.</p></div>
+      <div class="step"><div class="n">04</div><h3>climb</h3><p>rise through the tiers, top the friend leaderboard, and let the receipts speak.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="features" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-eyebrow">what's inside</div>
+    <h2>an entire economy of judgment</h2>
+    <div class="features">
+      <div class="feat"><div class="ic">⚖️</div><h3>the ai judge</h3><p>every post gets a written verdict with a signed aura score. no diplomatic training whatsoever.</p></div>
+      <div class="feat"><div class="ic">🌍</div><h3>the everyone feed</h3><p>see what the whole app is farming, or keep it to your friends — you choose per post.</p></div>
+      <div class="feat"><div class="ic">📈</div><h3>tiers that pay off</h3><p>newcomer to legend. each tier unlocks real flex: accent colors, verdict themes, multi-photo posts.</p></div>
+      <div class="feat"><div class="ic">🎨</div><h3>verdict themes</h3><p>certified users style their verdict cards — midnight, y2k, heatmap, money. main-character energy.</p></div>
+      <div class="feat"><div class="ic">✨</div><h3>aura gifting</h3><p>notorious users can gift aura to friends. take my aura, king. (tiers can't be gifted — you climb those yourself.)</p></div>
+      <div class="feat"><div class="ic">🏆</div><h3>friend leaderboards</h3><p>ranked by aura. settle who actually has their life together, with data.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tiers" class="tiers-band">
+  <div class="wrap">
+    <div class="sec-eyebrow">the ladder</div>
+    <h2>five tiers. earned, never given.</h2>
+    <p class="sub">tiers come from posting and surviving the judge. aura can be gifted — status can't.</p>
+    <div class="ladder">
+      <div class="tier"><div class="badge b-new">a</div><h3>newcomer</h3><p>everyone starts here. post up.</p></div>
+      <div class="tier"><div class="badge b-ris">a</div><h3>rising</h3><p>unlocks flair + custom accent colors.</p></div>
+      <div class="tier"><div class="badge b-cer">a</div><h3>certified</h3><p>unlocks custom verdict themes.</p></div>
+      <div class="tier"><div class="badge b-not">a</div><h3>notorious</h3><p>unlocks multi-photo posts + aura gifting.</p></div>
+      <div class="tier"><div class="badge b-leg">a</div><h3>legend</h3><p>the top of the ladder. more coming.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-eyebrow">questions</div>
+    <h2>asked and answered</h2>
+    <div class="faq">
+      <details>
+        <summary>is aura free?</summary>
+        <p>yes. download it, post, get judged, farm aura. all free.</p>
+      </details>
+      <details>
+        <summary>who sees my posts?</summary>
+        <p>you decide, per post: everyone (the public feed) or just your friends. you can also report and block anyone — the feed stays clean.</p>
+      </details>
+      <details>
+        <summary>is the judge... mean?</summary>
+        <p>the judge is honest. think sarcastic best friend, not internet troll. it'll roast the 2am text and respect the 5am run — sometimes in the same breath.</p>
+      </details>
+      <details>
+        <summary>what's aura actually for?</summary>
+        <p>status, mostly. your score climbs the leaderboard, unlocks tiers, and settles arguments. chaos counts too — a spectacularly bad decision is still content.</p>
+      </details>
+      <details>
+        <summary>when's android?</summary>
+        <p>soon — it's in review on google play right now. ios is live today.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="glow"></div>
+  <div class="wrap cta-in">
+    <div class="big-a">a</div>
+    <h2>ready to be judged?</h2>
+    <p class="sub" style="margin:0 auto">your decisions are already questionable. might as well get points for them.</p>
+    <div class="store-row">
+      <a class="btn btn-green" href="https://apps.apple.com/app/id6769072074">download for ios</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>
+      <div style="font-family:var(--disp);font-weight:700;color:var(--text);margin-bottom:6px">aura</div>
+      <div>made by universal spine llc · <a href="mailto:1staura@aura-judge.com" style="color:var(--muted)">1staura@aura-judge.com</a></div>
+    </div>
+    <div class="foot-links">
+      <a href="/privacy.html">privacy</a>
+      <a href="/terms.html">terms</a>
+      <a href="/delete-account.html">delete account</a>
+      <a href="/child-safety.html">child safety</a>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
