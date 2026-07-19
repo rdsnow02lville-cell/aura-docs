@@ -146,7 +146,15 @@ footer{border-top:1px solid var(--line);padding:44px 0 56px;font-size:.85rem;col
 /* responsive */
 @media(max-width:920px){
   .hero-in{grid-template-columns:1fr;gap:60px}
-  .stack{min-height:470px;max-width:420px;margin:0 auto}
+  /* single column: the absolute deck is desktop-only. In flow the cards can't
+     collapse (auto margins + only-abs children shrink-wrapped .stack to 0) or
+     overlap (fixed top offsets can't fit taller wrapped cards) */
+  .stack{width:100%;min-height:0;max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+  .vcard{position:static;width:100%}
+  .c1{transform:rotate(-1.5deg)}
+  .c2{transform:rotate(1.2deg)}
+  .c3{transform:rotate(-1deg);opacity:1}
+  .vcard:hover{transform:none}
   .steps{grid-template-columns:repeat(2,1fr)}
   .features{grid-template-columns:repeat(2,1fr)}
   .ladder{grid-template-columns:repeat(3,1fr)}
