@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>aura — get judged. farm aura.</title>
+<meta name="description" content="the ai that rates your every move. post what you did, get judged, farm aura, climb the leaderboard.">
+<meta property="og:title" content="aura — get judged. farm aura.">
+<meta property="og:description" content="the ai that rates your every move. post what you did, get judged, farm aura.">
+<meta property="og:url" content="https://aura-judge.com">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://aura-judge.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="aura — get judged. farm aura.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="aura — get judged. farm aura.">
+<meta name="twitter:description" content="the ai that rates your every move. post what you did, get judged, farm aura.">
+<meta name="twitter:image" content="https://aura-judge.com/og-image.png">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+<style>
+/* ============ tokens ============ */
+:root{
+  color-scheme: dark;
+
+  /* surface + ink */
+  --bg:#000;
+  --surface:#0b0b0c;
+  --surface-2:#101012;
+  --line:#1c1c1f;
+  --ink:#fff;
+  --ink-muted:#9a9aa2;
+  --ink-dim:#63636b;
+
+  /* brand + tiers */
+  --green:#4ade80;
+  --green-ink:#04160a;
+  --green-glow:rgba(74,222,128,.16);
+  --green-soft:rgba(74,222,128,.12);
+  --violet:#818cf8;
+  --red:#ef4444;
+  --gold:#fbbf24;
+
+  /* type */
+  --disp:'Poppins',system-ui,sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+
+  /* fluid scale — minor-third-ish, clamped between 390px and 1200px */
+  --fs-xs:clamp(.72rem,.68rem + .2vw,.8rem);
+  --fs-s:clamp(.85rem,.8rem + .25vw,.95rem);
+  --fs-base:clamp(.95rem,.9rem + .3vw,1.08rem);
+  --fs-l:clamp(1.1rem,1rem + .5vw,1.35rem);
+  --fs-xl:clamp(1.6rem,1.2rem + 2vw,2.6rem);
+  --fs-hero:clamp(2.8rem,1.5rem + 5.2vw,5rem);
+  --fs-score:clamp(1.5rem,1.3rem + 1vw,2rem);
+
+  /* rhythm */
+  --space:clamp(3.5rem,2.5rem + 5vw,7.5rem);
+  --gap:clamp(.9rem,.7rem + 1vw,1.4rem);
+  --pad:clamp(1.15rem,1rem + .8vw,1.6rem);
+  --gutter:clamp(1.25rem,4vw,3rem);
+  --measure:62rem;
+  --r:18px;
+}
+
+/* ============ base ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-size:var(--fs-base);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--green);color:var(--green-ink)}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:4px}
+
+h1,h2{font-family:var(--disp);font-weight:800;letter-spacing:-.02em;line-height:1.05;text-wrap:balance}
+h2{font-size:var(--fs-xl)}
+h3{font-family:var(--disp);font-weight:700;font-size:var(--fs-base)}
+
+/* section shell: grid applied straight to the section */
+main > section{
+  display:grid;
+  grid-template-columns:minmax(var(--gutter),1fr) minmax(0,var(--measure)) minmax(var(--gutter),1fr);
+  row-gap:var(--gap);
+  padding-block:var(--space);
+}
+main > section > *{grid-column:2}
+.kicker{
+  font-family:var(--mono);font-weight:600;font-size:var(--fs-xs);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--green);
+}
+.sub{color:var(--ink-muted);max-width:40rem}
+
+/* ============ nav ============ */
+body > nav{
+  position:sticky;top:0;z-index:50;
+  display:grid;
+  grid-template-columns:minmax(var(--gutter),1fr) minmax(0,var(--measure)) minmax(var(--gutter),1fr);
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+body > nav > menu{
+  grid-column:2;
+  display:flex;align-items:center;gap:clamp(1rem,3vw,1.75rem);
+  height:64px;padding:0;list-style:none;font-size:var(--fs-s);
+}
+body > nav .brand{
+  font-family:var(--disp);font-weight:800;font-size:1.4rem;
+  display:flex;align-items:center;gap:10px;margin-right:auto;
+}
+.a-mark{
+  inline-size:34px;block-size:34px;border-radius:10px;
+  display:grid;place-items:center;font-size:1.2rem;line-height:1;
+  background:radial-gradient(circle at 50% 45%, rgba(74,222,128,.55), rgba(74,222,128,.08) 62%, transparent 75%), #060606;
+  box-shadow:0 0 22px rgba(74,222,128,.25);
+}
+body > nav menu li:not(.brand-item):not(.cta-item){color:var(--ink-muted)}
+body > nav menu a:hover{color:var(--ink)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--disp);font-weight:700;border-radius:999px;
+  padding:.72em 1.5em;font-size:var(--fs-s);
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn-green{background:var(--green);color:var(--green-ink)}
+.btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(74,222,128,.35)}
+.btn-ghost{border:1px solid var(--line)}
+.btn-ghost:hover{border-color:#333;background:var(--surface)}
+
+/* ============ hero ============ */
+body > header{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(var(--gutter),1fr) minmax(0,var(--measure)) minmax(var(--gutter),1fr);
+  padding-block:clamp(4rem,3rem + 5vw,7rem) clamp(3rem,2rem + 4vw,5rem);
+  overflow:hidden;
+}
+body > header::before{
+  content:"";position:absolute;inset:-20% -10% auto;block-size:150%;pointer-events:none;
+  background:radial-gradient(560px 560px at 76% 34%, var(--green-glow), transparent 62%),
+             radial-gradient(420px 420px at 10% 6%, rgba(74,222,128,.06), transparent 60%);
+}
+body > header > *{grid-column:2;position:relative}
+.hero-grid{
+  display:grid;gap:clamp(2rem,4vw,4rem);
+  grid-template-columns:1.1fr .9fr;align-items:center;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;justify-self:start;
+  font-family:var(--mono);font-weight:600;font-size:var(--fs-xs);letter-spacing:.05em;
+  color:var(--green);background:var(--green-soft);
+  border:1px solid rgba(74,222,128,.25);
+  padding:.45em 1em;border-radius:999px;margin-bottom:1.4rem;
+}
+.eyebrow::before{
+  content:"";inline-size:7px;block-size:7px;border-radius:50%;background:var(--green);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{font-size:var(--fs-hero)}
+h1 em{font-style:normal;color:var(--green)}
+.lede{color:var(--ink-muted);font-size:var(--fs-l);max-width:32rem;margin-block:1.4rem 2rem}
+.store-row{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+.store-note{font-size:var(--fs-xs);color:var(--ink-dim);margin-top:1rem}
+
+/* featured verdict + receipts */
+.docket{display:grid;gap:var(--gap)}
+article.verdict{
+  background:linear-gradient(180deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line);border-radius:var(--r);
+  padding:var(--pad);
+  display:grid;gap:.8rem;
+  box-shadow:0 18px 60px rgba(0,0,0,.6);
+}
+article.verdict.featured{transform:rotate(-1.4deg)}
+article.verdict header{display:flex;align-items:center;gap:.65rem}
+.avatar{
+  inline-size:34px;block-size:34px;border-radius:50%;flex:none;
+  background:#161618;display:grid;place-items:center;
+  font-size:.8rem;font-weight:600;
+}
+.ring-rising{box-shadow:0 0 0 2px #000,0 0 0 4px var(--green)}
+.ring-certified{box-shadow:0 0 0 2px #000,0 0 0 4px var(--violet)}
+.ring-legend{box-shadow:0 0 0 2px #000,0 0 0 4px var(--gold)}
+.handle{font-size:var(--fs-s);font-weight:600}
+.tierpill{
+  font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:.08em;
+  padding:2px 9px;border-radius:999px;border:1px solid;margin-left:auto;
+}
+.pill-rising{color:var(--green);border-color:rgba(74,222,128,.4)}
+.pill-certified{color:var(--violet);border-color:rgba(129,140,248,.4)}
+.pill-legend{color:var(--gold);border-color:rgba(251,191,36,.4)}
+article.verdict .action{font-weight:600;font-size:var(--fs-base)}
+article.verdict blockquote{
+  font-size:var(--fs-s);color:var(--ink-muted);
+  border-left:3px solid var(--green);padding-left:.8rem;
+}
+.score{
+  font-family:var(--mono);font-weight:800;font-size:var(--fs-score);
+  letter-spacing:-.02em;display:flex;align-items:baseline;gap:.5rem;
+}
+.score small{font-family:var(--body);font-weight:500;font-size:var(--fs-xs);color:var(--ink-dim)}
+.gain{color:var(--green)} .loss{color:var(--red)}
+
+/* mini receipts under the featured card */
+.docket .mini{
+  grid-template-columns:auto 1fr auto;align-items:center;gap:.7rem;
+  padding:.8rem var(--pad);
+}
+.docket .mini .action{font-size:var(--fs-s);font-weight:500;color:var(--ink-muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.docket .mini .score{font-size:1rem}
+
+/* ============ verdict ticker (signature) ============ */
+.ticker{
+  border-block:1px solid var(--line);
+  background:var(--surface);
+  overflow:hidden;display:flex;
+  padding-block:.85rem;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+}
+.ticker ul{
+  display:flex;gap:2.75rem;flex:none;align-items:center;
+  padding:0 1.375rem 0 1.375rem;list-style:none;
+  font-family:var(--mono);font-size:var(--fs-xs);font-weight:600;
+  color:var(--ink-muted);white-space:nowrap;
+  animation:tick 46s linear infinite;
+}
+@keyframes tick{to{transform:translateX(-100%)}}
+.ticker b{font-weight:800}
+.ticker .gain,.ticker .loss{font-weight:800}
+.ticker li::after{content:"·";margin-left:2.75rem;color:var(--ink-dim)}
+
+/* ============ how it works: a real sequence ============ */
+ol.steps{
+  list-style:none;counter-reset:step;padding:0;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);
+  margin-top:1.5rem;
+}
+ol.steps li{
+  counter-increment:step;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:var(--pad);display:grid;gap:.5rem;align-content:start;
+  position:relative;
+  transition:border-color .2s ease, transform .2s ease;
+}
+ol.steps li:hover{border-color:rgba(74,222,128,.35);transform:translateY(-3px)}
+ol.steps li::before{
+  content:counter(step,decimal-leading-zero);
+  font-family:var(--mono);font-weight:800;font-size:var(--fs-xs);
+  color:var(--green);letter-spacing:.1em;
+}
+ol.steps li:not(:last-child)::after{
+  content:"";position:absolute;top:50%;right:calc(-1 * var(--gap));
+  inline-size:var(--gap);block-size:1px;background:var(--line);
+}
+ol.steps p{font-size:var(--fs-s);color:var(--ink-muted)}
+
+/* ============ features ============ */
+.features{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);margin-top:1.5rem;
+}
+.features article{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:var(--pad);display:grid;gap:.5rem;align-content:start;
+  transition:border-color .2s ease, transform .2s ease;
+}
+.features article:hover{border-color:#2a2a2e;transform:translateY(-3px)}
+.features .ic{
+  inline-size:40px;block-size:40px;border-radius:11px;
+  background:var(--green-soft);display:grid;place-items:center;
+  font-size:1.1rem;margin-bottom:.4rem;
+}
+.features p{font-size:var(--fs-s);color:var(--ink-muted)}
+
+/* ============ tiers: the staircase ============ */
+#tiers{background:linear-gradient(180deg,#050505,#0a0a0b);border-block:1px solid var(--line)}
+.ladder{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gap);
+  align-items:end;margin-top:2rem;
+}
+.ladder article{
+  border:1px solid var(--line);border-radius:var(--r);background:var(--surface);
+  padding:var(--pad) 1rem;text-align:center;
+  display:grid;gap:.4rem;justify-items:center;align-content:start;
+  transition:transform .2s ease;
+}
+.ladder article:hover{transform:translateY(-4px)}
+/* each rung stands taller than the last: hierarchy in the geometry */
+.ladder article:nth-child(1){min-block-size:11rem}
+.ladder article:nth-child(2){min-block-size:12.75rem}
+.ladder article:nth-child(3){min-block-size:14.5rem}
+.ladder article:nth-child(4){min-block-size:16.25rem}
+.ladder article:nth-child(5){min-block-size:18rem}
+.ladder .badge{
+  inline-size:46px;block-size:46px;border-radius:50%;
+  display:grid;place-items:center;
+  font-family:var(--disp);font-weight:800;font-size:1.1rem;
+  background:#0f0f11;margin-bottom:.5rem;
+}
+.ladder p{font-size:var(--fs-xs);color:var(--ink-muted)}
+.b-newcomer{color:var(--ink-dim);box-shadow:0 0 0 2px #222}
+.b-rising{color:var(--green);box-shadow:0 0 0 2px var(--green),0 0 18px rgba(74,222,128,.35)}
+.b-certified{color:var(--violet);box-shadow:0 0 0 2px var(--violet),0 0 18px rgba(129,140,248,.35)}
+.b-notorious{color:var(--red);box-shadow:0 0 0 2px var(--red),0 0 18px rgba(239,68,68,.3)}
+.b-legend{color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 0 22px rgba(251,191,36,.4)}
+
+/* ============ faq ============ */
+#faq details{
+  border:1px solid var(--line);border-radius:14px;background:var(--surface);
+  margin-bottom:.7rem;overflow:hidden;max-width:46rem;
+}
+#faq summary{
+  cursor:pointer;list-style:none;padding:1.05rem 1.35rem;
+  font-family:var(--disp);font-weight:600;font-size:var(--fs-base);
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+}
+#faq summary::-webkit-details-marker{display:none}
+#faq summary::after{content:"+";color:var(--green);font-size:1.2rem;transition:transform .2s}
+#faq details[open] summary::after{transform:rotate(45deg)}
+#faq details p{padding:0 1.35rem 1.05rem;color:var(--ink-muted);font-size:var(--fs-s)}
+
+/* ============ cta ============ */
+#get{position:relative;text-align:center;overflow:hidden}
+#get::before{
+  content:"";position:absolute;left:50%;top:50%;translate:-50% -50%;
+  inline-size:640px;block-size:640px;pointer-events:none;
+  background:radial-gradient(circle,var(--green-glow),transparent 62%);
+}
+#get > *{position:relative;justify-self:center}
+.big-a{
+  font-family:var(--disp);font-weight:800;line-height:1;
+  font-size:clamp(3.4rem,3rem + 2vw,4.6rem);
+  text-shadow:0 0 34px rgba(74,222,128,.6),0 0 90px rgba(74,222,128,.3);
+}
+#get .store-row{justify-content:center;margin-top:1.5rem}
+
+/* ============ footer ============ */
+body > footer{
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:minmax(var(--gutter),1fr) minmax(0,var(--measure)) minmax(var(--gutter),1fr);
+  padding-block:2.75rem 3.5rem;
+  font-size:var(--fs-xs);color:var(--ink-dim);row-gap:1rem;
+}
+body > footer > *{grid-column:2}
+.foot{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.foot menu{display:flex;gap:1.4rem;flex-wrap:wrap;list-style:none;padding:0}
+.foot a:hover{color:var(--ink)}
+
+/* ============ responsive ============ */
+@media (max-width:920px){
+  .hero-grid{grid-template-columns:1fr;gap:3rem}
+  article.verdict.featured{transform:rotate(0)}
+  ol.steps{grid-template-columns:repeat(2,1fr)}
+  ol.steps li:not(:last-child)::after{display:none}
+  .features{grid-template-columns:repeat(2,1fr)}
+  .ladder{grid-template-columns:repeat(3,1fr);align-items:stretch}
+  .ladder article{min-block-size:0!important}
+}
+@media (max-width:600px){
+  body > nav menu li.nav-link{display:none}
+  ol.steps{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr}
+  .ladder{grid-template-columns:repeat(2,1fr)}
+  .docket .mini .action{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .ticker ul{animation:none}
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="main">
+  <menu>
+    <li class="brand-item"><a class="brand" href="#top"><span class="a-mark">a</span>aura</a></li>
+    <li class="nav-link"><a href="#how">how it works</a></li>
+    <li class="nav-link"><a href="#features">features</a></li>
+    <li class="nav-link"><a href="#tiers">tiers</a></li>
+    <li class="nav-link"><a href="#faq">faq</a></li>
+    <li class="cta-item"><a class="btn btn-green" href="https://apps.apple.com/app/id6769072074">get the app</a></li>
+  </menu>
+</nav>
+
+<header id="top">
+  <div class="hero-grid">
+    <div>
+      <p class="eyebrow">now on the app store · android coming soon</p>
+      <h1>get judged<em>.</em><br>farm aura<em>.</em></h1>
+      <p class="lede">post what you did. the ai rates it — brutally, fairly, instantly. earn aura, unlock tiers, and find out once and for all who in the group chat has the worst decision-making.</p>
+      <p class="store-row">
+        <a class="btn btn-green" href="https://apps.apple.com/app/id6769072074">download for ios</a>
+        <a class="btn btn-ghost" href="#how">see how it works</a>
+      </p>
+      <p class="store-note">free to use. your posts stay yours — share to everyone or just friends, per post.</p>
+    </div>
+
+    <div class="docket" aria-hidden="true">
+      <article class="verdict featured">
+        <header>
+          <span class="avatar ring-rising">m</span>
+          <span class="handle">@mayhem.mia</span>
+          <span class="tierpill pill-rising">rising</span>
+        </header>
+        <p class="action">"texted my ex at 2am to ask if they still had my hoodie"</p>
+        <blockquote>the hoodie was never the point and everyone knows it. including the hoodie.</blockquote>
+        <p class="score loss">−1,250 <small>aura</small></p>
+      </article>
+      <article class="verdict mini">
+        <span class="avatar ring-certified">j</span>
+        <span class="action">"woke up at 5am and ran 6 miles in the rain"</span>
+        <span class="score gain">+975</span>
+      </article>
+      <article class="verdict mini">
+        <span class="avatar ring-legend">z</span>
+        <span class="action">"ate cereal for dinner three nights in a row"</span>
+        <span class="score loss">−480</span>
+      </article>
+    </div>
+  </div>
+</header>
+
+<aside class="ticker" aria-hidden="true">
+  <ul>
+    <li><b>@brokeboi.brad</b> <span class="loss">−2,400</span> impulse-bought a kayak</li>
+    <li><b>@saltlamp</b> <span class="gain">+1,100</span> apologized first. in writing</li>
+    <li><b>@gymratgav</b> <span class="gain">+820</span> leg day with no witnesses</li>
+    <li><b>@notlukas</b> <span class="loss">−3,750</span> replied "k" to his grandma</li>
+    <li><b>@ceo.of.naps</b> <span class="gain">+640</span> declined plans, honored the nap</li>
+    <li><b>@vibecheckvic</b> <span class="loss">−980</span> read the group chat, said nothing</li>
+    <li><b>@ratiodroid</b> <span class="gain">+2,050</span> deleted the app for a week</li>
+    <li><b>@petty.official</b> <span class="loss">−1,600</span> liked a photo from 2019. at 3am</li>
+  </ul>
+  <ul aria-hidden="true">
+    <li><b>@brokeboi.brad</b> <span class="loss">−2,400</span> impulse-bought a kayak</li>
+    <li><b>@saltlamp</b> <span class="gain">+1,100</span> apologized first. in writing</li>
+    <li><b>@gymratgav</b> <span class="gain">+820</span> leg day with no witnesses</li>
+    <li><b>@notlukas</b> <span class="loss">−3,750</span> replied "k" to his grandma</li>
+    <li><b>@ceo.of.naps</b> <span class="gain">+640</span> declined plans, honored the nap</li>
+    <li><b>@vibecheckvic</b> <span class="loss">−980</span> read the group chat, said nothing</li>
+    <li><b>@ratiodroid</b> <span class="gain">+2,050</span> deleted the app for a week</li>
+    <li><b>@petty.official</b> <span class="loss">−1,600</span> liked a photo from 2019. at 3am</li>
+  </ul>
+</aside>
+
+<main>
+
+<section id="how">
+  <p class="kicker">the loop</p>
+  <h2>four steps to judgment</h2>
+  <p class="sub">from questionable decision to public verdict in under thirty seconds.</p>
+  <ol class="steps">
+    <li><h3>post what you did</h3><p>big or small. impulse buys, 2am texts, gym heroics, cereal dinners. photos welcome.</p></li>
+    <li><h3>get judged</h3><p>the ai reads it and delivers a verdict — sharp, funny, and fair enough to sting.</p></li>
+    <li><h3>earn (or lose) aura</h3><p>every verdict moves your score. chaos counts. your aura never lies.</p></li>
+    <li><h3>climb</h3><p>rise through the tiers, top the friend leaderboard, and let the receipts speak.</p></li>
+  </ol>
+</section>
+
+<section id="features">
+  <p class="kicker">what's inside</p>
+  <h2>an entire economy of judgment</h2>
+  <div class="features">
+    <article><span class="ic">⚖️</span><h3>the ai judge</h3><p>every post gets a written verdict with a signed aura score. no diplomatic training whatsoever.</p></article>
+    <article><span class="ic">🌍</span><h3>the everyone feed</h3><p>see what the whole app is farming, or keep it to your friends — you choose per post.</p></article>
+    <article><span class="ic">📈</span><h3>tiers that pay off</h3><p>newcomer to legend. each tier unlocks real flex: accent colors, verdict themes, multi-photo posts.</p></article>
+    <article><span class="ic">🎨</span><h3>verdict themes</h3><p>certified users style their verdict cards — midnight, y2k, heatmap, money. main-character energy.</p></article>
+    <article><span class="ic">✨</span><h3>aura gifting</h3><p>notorious users can gift aura to friends. take my aura, king. (tiers can't be gifted — you climb those yourself.)</p></article>
+    <article><span class="ic">🏆</span><h3>friend leaderboards</h3><p>ranked by aura. settle who actually has their life together, with data.</p></article>
+  </div>
+</section>
+
+<section id="tiers">
+  <p class="kicker">the ladder</p>
+  <h2>five tiers. earned, never given.</h2>
+  <p class="sub">tiers come from posting and surviving the judge. aura can be gifted — status can't.</p>
+  <div class="ladder">
+    <article><span class="badge b-newcomer">a</span><h3>newcomer</h3><p>everyone starts here. post up.</p></article>
+    <article><span class="badge b-rising">a</span><h3>rising</h3><p>unlocks flair + custom accent colors.</p></article>
+    <article><span class="badge b-certified">a</span><h3>certified</h3><p>unlocks custom verdict themes.</p></article>
+    <article><span class="badge b-notorious">a</span><h3>notorious</h3><p>unlocks multi-photo posts + aura gifting.</p></article>
+    <article><span class="badge b-legend">a</span><h3>legend</h3><p>the top of the ladder. more coming.</p></article>
+  </div>
+</section>
+
+<section id="faq">
+  <p class="kicker">questions</p>
+  <h2>asked and answered</h2>
+  <details>
+    <summary>is aura free?</summary>
+    <p>yes. download it, post, get judged, farm aura. all free.</p>
+  </details>
+  <details>
+    <summary>who sees my posts?</summary>
+    <p>you decide, per post: everyone (the public feed) or just your friends. you can also report and block anyone — the feed stays clean.</p>
+  </details>
+  <details>
+    <summary>is the judge... mean?</summary>
+    <p>the judge is honest. think sarcastic best friend, not internet troll. it'll roast the 2am text and respect the 5am run — sometimes in the same breath.</p>
+  </details>
+  <details>
+    <summary>what's aura actually for?</summary>
+    <p>status, mostly. your score climbs the leaderboard, unlocks tiers, and settles arguments. chaos counts too — a spectacularly bad decision is still content.</p>
+  </details>
+  <details>
+    <summary>when's android?</summary>
+    <p>soon — it's in review on google play right now. ios is live today.</p>
+  </details>
+</section>
+
+<section id="get">
+  <p class="big-a">a</p>
+  <h2>ready to be judged?</h2>
+  <p class="sub" style="margin-inline:auto">your decisions are already questionable. might as well get points for them.</p>
+  <p class="store-row">
+    <a class="btn btn-green" href="https://apps.apple.com/app/id6769072074">download for ios</a>
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <p>aura<br>made by universal spine llc · <a href="mailto:1staura@aura-judge.com">1staura@aura-judge.com</a></p>
+    <menu>
+      <li><a href="/privacy.html">privacy</a></li>
+      <li><a href="/terms.html">terms</a></li>
+      <li><a href="/delete-account.html">delete account</a></li>
+      <li><a href="/child-safety.html">child safety</a></li>
+    </menu>
+  </div>
+</footer>
+
+</body>
+</html>
