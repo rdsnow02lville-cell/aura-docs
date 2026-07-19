@@ -62,7 +62,7 @@ h1 .dot{color:var(--green)}
 .store-note{font-size:.82rem;color:var(--dim);margin-top:14px}
 
 /* verdict card stack */
-.stack{position:relative;min-height:430px}
+.stack{position:relative;min-height:580px}
 .vcard{position:absolute;width:min(360px,86%);background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:0 18px 60px rgba(0,0,0,.6)}
 .vcard .who{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .avatar{width:34px;height:34px;border-radius:50%;background:#161618;display:grid;place-items:center;font-size:.8rem;font-weight:600}
@@ -79,9 +79,9 @@ h1 .dot{color:var(--green)}
 .vcard .delta{font-family:var(--disp);font-weight:800;font-size:1.7rem}
 .d-plus{color:var(--green)} .d-minus{color:var(--red)}
 .vcard .delta small{font-size:.75rem;color:var(--dim);font-weight:500;font-family:var(--body);margin-left:8px}
-.c1{top:0;left:0;transform:rotate(-3deg);z-index:3}
+.c1{top:0;left:0;transform:rotate(-3deg);z-index:1}
 .c2{top:150px;right:0;transform:rotate(2.2deg);z-index:2}
-.c3{top:305px;left:26px;transform:rotate(-1.2deg);z-index:1;opacity:.92}
+.c3{top:305px;left:26px;transform:rotate(-1.2deg);z-index:3}
 .vcard:hover{z-index:9;transform:rotate(0) translateY(-4px);transition:transform .25s ease}
 
 /* ---------- sections ---------- */
@@ -153,7 +153,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 56px;font-size:.85rem;col
   .vcard{position:static;width:100%}
   .c1{transform:rotate(-1.5deg)}
   .c2{transform:rotate(1.2deg)}
-  .c3{transform:rotate(-1deg);opacity:1}
+  .c3{transform:rotate(-1deg);opacity:1;order:-1}
   .vcard:hover{transform:none}
   .steps{grid-template-columns:repeat(2,1fr)}
   .features{grid-template-columns:repeat(2,1fr)}
@@ -203,10 +203,10 @@ footer{border-top:1px solid var(--line);padding:44px 0 56px;font-size:.85rem;col
     </div>
     <div class="stack" aria-hidden="true">
       <div class="vcard c1">
-        <div class="who"><span class="avatar ring-g">m</span><span class="name">@mayhem.mia</span><span class="tierpill t-rising">rising</span></div>
-        <div class="action">"texted my ex at 2am to ask if they still had my hoodie"</div>
-        <div class="verdict">the hoodie was never the point and everyone knows it. including the hoodie.</div>
-        <div class="delta d-minus">−1,250 <small>aura</small></div>
+        <div class="who"><span class="avatar ring-gold">z</span><span class="name">@zerochill</span><span class="tierpill t-legend">legend</span></div>
+        <div class="action">"ate cereal for dinner three nights in a row"</div>
+        <div class="verdict">consistency is a virtue. this is not what the philosophers meant.</div>
+        <div class="delta d-minus">−480 <small>aura</small></div>
       </div>
       <div class="vcard c2">
         <div class="who"><span class="avatar ring-v">j</span><span class="name">@jchapman</span><span class="tierpill t-cert">certified</span></div>
@@ -215,10 +215,10 @@ footer{border-top:1px solid var(--line);padding:44px 0 56px;font-size:.85rem;col
         <div class="delta d-plus">+975 <small>aura</small></div>
       </div>
       <div class="vcard c3">
-        <div class="who"><span class="avatar ring-gold">z</span><span class="name">@zerochill</span><span class="tierpill t-legend">legend</span></div>
-        <div class="action">"ate cereal for dinner three nights in a row"</div>
-        <div class="verdict">consistency is a virtue. this is not what the philosophers meant.</div>
-        <div class="delta d-minus">−480 <small>aura</small></div>
+        <div class="who"><span class="avatar ring-g">m</span><span class="name">@mayhem.mia</span><span class="tierpill t-rising">rising</span></div>
+        <div class="action">"texted my ex at 2am to ask if they still had my hoodie"</div>
+        <div class="verdict">the hoodie was never the point and everyone knows it. including the hoodie.</div>
+        <div class="delta d-minus">−1,250 <small>aura</small></div>
       </div>
     </div>
   </div>
